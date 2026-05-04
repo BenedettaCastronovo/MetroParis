@@ -5,6 +5,20 @@ from model.connessione import Connesione
 class DAO():
 
     @staticmethod
+    def getAllEdgesPesati():
+        conn = DBConnect.get_connection()
+        result = []
+        cursor = conn.cursor(dictionary=True)
+        query = """SELECT id_stazP, id_stazA, count(*) as peso
+        FROM connessione c
+        group by id stazP
+        order by peso desc"""
+        cursor.execute(query)
+        for row in cursor:
+            result.append(row["idP"], row["idA"], row["peso"])
+
+
+    @staticmethod
     def getAllFermate():
         conn = DBConnect.get_connection()
 
