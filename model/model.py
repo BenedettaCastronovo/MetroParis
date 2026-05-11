@@ -1,5 +1,15 @@
+import geopy
+
 from database.DAO import DAO
 import networkx as nx
+
+def getPesoTempoPercorrenza(u, v, vel):
+    args = ((u.coordX, u.coordY), (v.coordX, v.coordY))
+    dist = geopy.distance.distance(*args).km
+    time = dist/vel*60
+    return time
+
+
 
 class Model:
     def __init__(self):
@@ -13,6 +23,20 @@ class Model:
         self._grafo.clear()
         self._grafo.add_nodes_from(self._fermate)
         self.addEdgesPesati()
+        self.addAllEdgesPesatiTempi()
+
+    def getShortestPath(self, u, v):
+        return nx.single_source_dijkstra_path(self._grafo, u, v)
+
+    def addAllEdgesPesatiTempi(self):
+        self._grafo.clear_edges()
+        alledgesPV1 = DAO.getAllEdgesv()
+        for e in alledgesPV1:
+            u = self._idMapFermate[e[0]]
+            v = self._idMapFermate[e[1]]
+            peso = getPesoTempoPercorrenza(u, v, e[2])
+            self._grafo.add_edge(u, v, weight=peso)
+
 
     def addEdgesPesati(self):
         #contiamo, posso farlo in sql
