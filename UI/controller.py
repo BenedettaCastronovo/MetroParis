@@ -13,7 +13,7 @@ class Controller:
 
 
     def handleCreaGrafo(self,e):
-        self._model.buildGraph()
+        self._model.buildGraphPesato()
         self._view.lst_result.controls.clear()
         self._view.lst_result.controls.append(ft.Text(f"Grafo correttamente creato"))
         self._view.lst_result.controls.append(ft.Text(f"il grafo da {self._model.get_numnodi()}"))
@@ -65,7 +65,8 @@ class Controller:
             return
 
         self._view.lst_result.controls.clear()
-        self._view.lst_result.controls.append(ft.Text(f"{totTime}", color = "green"))
+        self._view.lst_result.controls.append(ft.Text(f"Ho trovato un cammino fra {self._fermataPartenza} e "
+                        f"{self._fermataArrivo} che impiega {totTime} minuti.", color="green"))
         for v in optPath:
             self._view.lst_result.controls.append(ft.Text(f"{v}"))
         self._view.update_page()

@@ -11,11 +11,11 @@ class DAO():
         cursor = conn.cursor(dictionary=True)
         query = """SELECT id_stazP, id_stazA, count(*) as peso
         FROM connessione c
-        group by id stazP
+        group by id stazP, id_stazA
         order by peso desc"""
         cursor.execute(query)
         for row in cursor:
-            result.append(row["idP"], row["idA"], row["peso"])
+            result.append((row["idP"], row["idA"], row["peso"]))
 
 
     @staticmethod
@@ -90,8 +90,7 @@ class DAO():
         result = []
 
         cursor = conn.cursor(dictionary=True)
-        query = """SELECT
-        c.id_stazP, c.id_stazA, max(l.velocità) as v
+        query = """SELECT c.id_stazP, c.id_stazA, max(l.velocità) as v
         FROM connessione c, linea l
         WHERE l.id_linea = c.id_linea
         GROUP BY c.id_stazP, c.id_stazA
@@ -99,7 +98,7 @@ class DAO():
         cursor.execute(query)
 
         for row in cursor:
-            result.append(row["id_stazP"], row["id_stazA"], row["v"])
+            result.append((row["id_stazP"], row["id_stazA"], row["v"]))
         cursor.close()
         conn.close()
         return result

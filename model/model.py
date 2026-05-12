@@ -1,5 +1,5 @@
-import geopy
-
+import geopy.distance
+from datetime import datetime
 from database.DAO import DAO
 import networkx as nx
 
@@ -22,7 +22,7 @@ class Model:
     def buildGraphPesato(self):
         self._grafo.clear()
         self._grafo.add_nodes_from(self._fermate)
-        self.addEdgesPesati()
+        #self.addEdgesPesati()
         self.addAllEdgesPesatiTempi()
 
     def getShortestPath(self, u, v):
